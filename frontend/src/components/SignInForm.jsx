@@ -45,16 +45,16 @@ const SignInForm = ({ buttonClasses, buttonForGFT, onToggleSignUp }) => {
   };
 
   return (
-    <div className="w-full bg-gray-100 rounded-2xl shadow-xl border border-gray-200 my-4 mx-auto">
-      <div className="px-8 py-6 space-y-5">
+    <div className="w-full bg-white lg:bg-gray-100 rounded-2xl shadow-lg border border-gray-200 my-0 lg:my-4 mx-auto">
+      <div className="px-5 py-4 lg:px-8 lg:py-6 space-y-3 lg:space-y-5">
         {/* Header */}
-        <div className="text-center space-y-1 mb-4">
-          <h1 className="text-2xl font-bold text-[#03C9D7]">Welcome Back</h1>
-          <p className="text-sm text-gray-500">Sign in to your account</p>
+        <div className="text-center space-y-0.5 mb-2 lg:mb-4">
+          <h1 className="text-xl lg:text-2xl font-bold text-[#03C9D7]">Welcome Back</h1>
+          <p className="text-sm text-gray-500 mb-10">Sign in to your account</p>
         </div>
 
         {/* Form */}
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form className="space-y-2.5 lg:space-y-4" onSubmit={handleSubmit}>
           {/* Email */}
           <div className="relative">
             <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
@@ -99,7 +99,7 @@ const SignInForm = ({ buttonClasses, buttonForGFT, onToggleSignUp }) => {
             <label className="text-sm font-medium text-gray-700">
               Voice phrase
             </label>
-            <p className="text-xs text-gray-500 italic">
+            <p className="text-xs text-gray-500 italic mb-3">
               Say the same phrase you used during signup
             </p>
             <AudioRecorder
@@ -137,17 +137,17 @@ const SignInForm = ({ buttonClasses, buttonForGFT, onToggleSignUp }) => {
         </form>
 
         {/* Divider */}
-        {/* <div className="relative">
+        {/* <div className="relative py-0.5">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
+            <div className="w-full border-t border-gray-200"></div>
           </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-gray-100 text-gray-500">Or continue with</span>
+          <div className="relative flex justify-center text-xs lg:text-sm">
+            <span className="px-2 bg-white lg:bg-gray-100 text-gray-500">Or continue with</span>
           </div>
         </div> */}
 
         {/* Social */}
-        {/* <div className="grid grid-cols-3 gap-3">
+        {/* <div className="grid grid-cols-3 gap-2 lg:gap-3">
           <button type="button" className={buttonForGFT}>
             <svg className="h-5 w-5" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z" />
@@ -165,7 +165,7 @@ const SignInForm = ({ buttonClasses, buttonForGFT, onToggleSignUp }) => {
           </button>
         </div> */}
 
-        <p className="text-sm text-center text-gray-600 mt-3 border-t border-gray-100 pt-3">
+        <p className="text-xs lg:text-sm text-center text-gray-600 mt-2 border-t border-gray-100 pt-2 lg:pt-3">
           Don’t have an account?{" "}
           <button type="button" onClick={onToggleSignUp} className="text-[#039BAB] font-medium hover:underline">
             Sign Up

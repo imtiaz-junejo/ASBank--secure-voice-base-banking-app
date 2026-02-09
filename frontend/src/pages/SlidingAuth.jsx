@@ -28,7 +28,8 @@ export default function SlidingAuth() {
 
   return (
     <div
-      className={`relative w-full bg-white min-h-screen overflow-hidden
+      className={`auth-layout-root relative w-full bg-white overflow-hidden
+        max-lg:before:opacity-0 max-lg:before:pointer-events-none max-lg:before:invisible
         before:content-[''] before:absolute before:w-[1500px] before:h-[1500px] lg:before:h-[2000px] 
         lg:before:w-[2000px] lg:before:top-[-10%] before:top-[initial] lg:before:right-[48%] 
         before:right-[initial] max-lg:before:left-[30%] max-sm:before:bottom-[72%] max-md:before:left-1/2 
@@ -37,40 +38,97 @@ export default function SlidingAuth() {
         before:transition-all before:duration-[2s] lg:before:duration-[1.8s] ${
         isSignUpMode
           ? `lg:before:translate-x-full before:-translate-x-1/2 
-          before:translate-y-full lg:before:right-[25%] before:right-[initial] 
+          before:translate-y-full lg:before:right-[52%] before:right-[initial] 
           sm:max-lg:before:bottom-[22%] max-sm:before:bottom-[20%] 
           max-md:before:left-1/2`
           : ""
       }`}
     >
-      {/* Forms Container: SignUp left, SignIn right */}
-      <div className="absolute w-full h-full top-0 left-0 flex items-center z-[5] px-4 sm:px-6 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 w-full max-w-6xl mx-auto items-start">
-          {/* LEFT: SignUp */}
-          <div className="flex justify-start order-2 lg:order-1">
+      {/* MOBILE: single form + teal banner - no page scroll, content fits or scrolls inside */}
+      <div className="relative z-[5] flex flex-col h-full lg:hidden overflow-hidden">
+        {!isSignUpMode ? (
+          <>
+            {/* Teal top banner - fixed height */}
+            <div className="bg-[#03C9D7] text-white px-6 pt-8 pb-10 rounded-b-[2rem] flex flex-col items-center justify-center text-center shrink-0">
+              <h3 className="font-semibold text-lg">New here?</h3>
+              <p className="text-sm opacity-95 mt-1">Sign up and discover our platform</p>
+              <button
+                type="button"
+                className="mt-3 w-[130px] h-10 text-[#03C9D7] bg-white font-semibold rounded-full border-2 border-white hover:bg-[#03C9D7] hover:text-white transition-colors text-sm"
+                onClick={toggleSignUpMode}
+              >
+                Sign up
+              </button>
+            </div>
+            {/* Sign In form - scrolls only here if needed */}
+            <div className="flex-1 min-h-0 px-4 -mt-4 pb-4 overflow-y-auto">
+              <div className="max-w-md mx-auto py-2">
+                <SignInForm
+                  buttonClasses={buttonClasses}
+                  buttonForGFT={buttonForGFT}
+                  onToggleSignUp={toggleSignUpMode}
+                />
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            {/* Sign Up form - scrolls only here if needed */}
+            <div className="flex-1 min-h-0 px-4 pt-4 pb-2 overflow-y-auto">
+              <div className="max-w-md mx-auto py-2">
+                <SignUpForm
+                  buttonClasses={buttonClasses}
+                  buttonForGFT={buttonForGFT}
+                  onToggleSignIn={toggleSignUpMode}
+                />
+              </div>
+            </div>
+            {/* Teal bottom banner - fixed height */}
+            <div className="bg-[#03C9D7] text-white px-6 py-8 rounded-t-[2rem] flex flex-col items-center justify-center text-center shrink-0">
+              <h3 className="font-semibold text-lg">One of us?</h3>
+              <p className="text-sm opacity-95 mt-1">Sign in to your account to have hassle free experience</p>
+              <button
+                type="button"
+                className="mt-3 w-[130px] h-10 text-[#03C9D7] bg-white font-semibold rounded-full border-2 border-white hover:bg-[#03C9D7] hover:text-white transition-colors text-sm"
+                onClick={toggleSignUpMode}
+              >
+                Sign in
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* DESKTOP: one form at a time - SignUp left (only on /signup), SignIn right (only on /login) */}
+      <div className="absolute inset-0 hidden lg:flex items-center justify-center z-[5] px-4 sm:px-6 lg:px-10 overflow-hidden">
+        <div className="relative w-full max-w-6xl h-full max-h-full mx-auto grid grid-cols-2 gap-6 lg:gap-10 items-start overflow-y-auto py-6">
+          <div className="flex justify-start">
             <div className="w-full max-w-md">
-              <SignUpForm
-                buttonClasses={buttonClasses}
-                buttonForGFT={buttonForGFT}
-                onToggleSignIn={toggleSignUpMode}
-              />
+              {isSignUpMode && (
+                <SignUpForm
+                  buttonClasses={buttonClasses}
+                  buttonForGFT={buttonForGFT}
+                  onToggleSignIn={toggleSignUpMode}
+                />
+              )}
             </div>
           </div>
-          {/* RIGHT: SignIn */}
-          <div className="flex justify-end order-1 lg:order-2">
+          <div className="flex justify-end">
             <div className="w-full max-w-md">
-              <SignInForm
-                buttonClasses={buttonClasses}
-                buttonForGFT={buttonForGFT}
-                onToggleSignUp={toggleSignUpMode}
-              />
+              {!isSignUpMode && (
+                <SignInForm
+                  buttonClasses={buttonClasses}
+                  buttonForGFT={buttonForGFT}
+                  onToggleSignUp={toggleSignUpMode}
+                />
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* PANELS */}
-      <div className="absolute h-full w-full top-0 left-0 grid grid-cols-1 max-lg:grid-rows-[1fr_2fr_1fr] lg:grid-cols-2">
+      {/* DESKTOP PANELS - clickable Sign up / Sign in */}
+      <div className="absolute h-full w-full top-0 left-0 hidden lg:grid grid-cols-2">
         
         {/* LEFT PANEL */}
         <div

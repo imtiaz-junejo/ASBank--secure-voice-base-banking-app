@@ -19,4 +19,24 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* Prevent page scroll on auth screen; allow auth to fill viewport */
+  html, body {
+    overflow-x: hidden;
+    height: 100%;
+  }
+
+  #root,
+  .App {
+    height: 100%;
+    min-height: 100%;
+  }
+}
+
+/* Lock auth layout to viewport - no page scroll */
+.auth-layout-root {
+  height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
 }

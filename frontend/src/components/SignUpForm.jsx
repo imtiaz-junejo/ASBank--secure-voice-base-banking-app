@@ -63,7 +63,7 @@ const SignUpForm = ({ buttonClasses, buttonForGFT, onToggleSignIn }) => {
       <div className="px-8 py-6 space-y-5">
         <div className="text-center space-y-1 mb-4">
           <h1 className="text-2xl font-bold text-[#03C9D7]">Create Account</h1>
-          <p className="text-sm text-gray-500">Sign up to get started</p>
+          <p className="text-sm text-gray-500 mb-6">Sign up to get started</p>
         </div>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
@@ -141,7 +141,7 @@ const SignUpForm = ({ buttonClasses, buttonForGFT, onToggleSignIn }) => {
             <label className="text-sm font-medium text-gray-700">
               Voice phrase
             </label>
-            <p className="text-xs text-gray-500 italic">
+            <p className="text-xs text-gray-500 mb-3 italic">
               Say something like: &quot;My voice is my password&quot;
             </p>
             <AudioRecorder 
