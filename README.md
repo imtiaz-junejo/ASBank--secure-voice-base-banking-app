@@ -1,267 +1,234 @@
 # Voice-Based Authentication System
 
-A full-stack voice authentication system that uses OpenAI Whisper for speech-to-text conversion and voice phrase matching for secure login.
+A full-stack voice authentication system that uses **OpenAI Whisper** for speech-to-text and voice phrase matching for signup and login. Users register with name, email, password, and a voice phrase, then sign in with the same phrase for verification.
 
-## 🎯 Features
+---
 
-- **Voice Signup**: Users register with email/username and record a voice phrase
-- **Voice Login**: Users authenticate by recording the same voice phrase
-- **Speech-to-Text**: Powered by OpenAI Whisper for accurate transcription
-- **Similarity Matching**: Uses text similarity algorithms to verify voice phrases
-- **Modern UI**: Clean, responsive React frontend with audio recording capabilities
+## Features
 
-## 🛠️ Tech Stack
+- **Voice signup**: Register with name, email, password, and a recorded voice phrase
+- **Voice login**: Sign in with email, password, and the same voice phrase
+- **Speech-to-text**: OpenAI Whisper for transcription
+- **Similarity matching**: Text similarity (e.g. difflib) to verify voice phrases
+- **Responsive UI**: React + Vite + Tailwind; sliding auth layout, mobile and desktop
+- **Password security**: Hashed passwords with Werkzeug
 
-### Backend
-- **Python Flask**: RESTful API server
-- **SQLAlchemy**: ORM for database operations
-- **SQLite**: Lightweight database
-- **OpenAI Whisper**: Speech-to-text transcription
-- **Flask-CORS**: Cross-origin resource sharing
+---
 
-### Frontend
-- **React 18**: Modern React with functional components and hooks
-- **React Router**: Client-side routing
-- **MediaRecorder API**: Browser-based audio recording
+## Tech Stack
 
-## 📁 Project Structure
+| Layer    | Technology |
+| -------- | ---------- |
+| Backend  | Python 3, Flask, SQLAlchemy, SQLite, OpenAI Whisper, Flask-CORS, Werkzeug |
+| Frontend | React 19, Vite 7, React Router 7, Tailwind CSS 4, MediaRecorder API |
+
+---
+
+## Project Structure
 
 ```
 VoiceBaseLogin/
 ├── backend/
-│   ├── app.py                 # Main Flask application
-│   ├── models.py              # SQLAlchemy database models
-│   ├── whisper_service.py     # Whisper transcription service
-│   ├── requirements.txt       # Python dependencies
-│   ├── uploads/               # Audio file storage (created automatically)
-│   └── voice_auth.db          # SQLite database (created automatically)
+│   ├── app.py              # Flask app, REST endpoints (signup, login, health)
+│   ├── models.py            # SQLAlchemy User model
+│   ├── whisper_service.py   # Whisper transcription (lazy-loaded)
+│   ├── requirements.txt    # Python dependencies
+│   ├── uploads/             # Stored audio files (created at runtime)
+│   └── voice_auth.db        # SQLite DB (created at runtime)
 │
 ├── frontend/
 │   ├── public/
-│   │   └── index.html
+│   │   ├── index.html
+│   │   ├── signin.svg
+│   │   └── signup.svg
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── AudioRecorder.js      # Audio recording component
-│   │   │   └── AudioRecorder.css
+│   │   │   ├── AudioRecorder.jsx   # Record / stop / playback
+│   │   │   ├── SignInForm.jsx      # Login form + voice
+│   │   │   ├── SignUpForm.jsx      # Signup form + voice
+│   │   │   └── CloudDivider.jsx
 │   │   ├── pages/
-│   │   │   ├── Signup.js             # Signup page
-│   │   │   ├── Login.js              # Login page
-│   │   │   ├── Dashboard.js          # Dashboard page
-│   │   │   ├── Auth.css              # Auth page styles
-│   │   │   └── Dashboard.css         # Dashboard styles
+│   │   │   ├── SlidingAuth.jsx     # Auth layout (login/signup, sliding UI)
+│   │   │   ├── Dashboard.jsx       # Post-login page
+│   │   │   └── Dashboard.css
 │   │   ├── services/
-│   │   │   └── api.js                # API service functions
-│   │   ├── utils/
-│   │   │   └── audioRecorder.js      # Audio recording utility
-│   │   ├── App.js                    # Main app component
-│   │   ├── App.css
-│   │   ├── index.js                  # React entry point
-│   │   └── index.css                 # Global styles
+│   │   │   └── api.js              # signup(), login() API calls
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css               # Tailwind + global styles
 │   ├── package.json
-│   └── .gitignore
+│   ├── vite.config.js
+│   └── .env                        # Optional: VITE_API_URL
 │
+├── .gitignore
 └── README.md
 ```
 
-## 🚀 Setup Instructions
+---
+
+## Setup Instructions
 
 ### Prerequisites
 
-- **Python 3.8+** installed
-- **Node.js 16+** and **npm** installed
-- **Microphone** access for recording
+- **Python 3.8+**
+- **Node.js 18+** and **npm**
+- **Microphone** for recording
 
-### Backend Setup
+### 1. Backend
 
-1. **Navigate to backend directory:**
-   ```bash
-   cd backend
-   ```
-
-2. **Create a virtual environment (recommended):**
-   ```bash
-   # Windows
-   python -m venv venv
-   venv\Scripts\activate
-
-   # macOS/Linux
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
-
-3. **Install Python dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-   **Note:** Installing Whisper and PyTorch may take several minutes as they download large model files.
-
-4. **Run the Flask server:**
-   ```bash
-   python app.py
-   ```
-
-   The backend will start on `http://localhost:5000`
-
-### Frontend Setup
-
-1. **Open a new terminal and navigate to frontend directory:**
-   ```bash
-   cd frontend
-   ```
-
-2. **Install Node.js dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Start the React development server:**
-   ```bash
-   npm start
-   ```
-
-   The frontend will start on `http://localhost:3000` and automatically open in your browser.
-
-## 📝 Usage
-
-### Signup Process
-
-1. Navigate to the Signup page (or `/signup`)
-2. Enter your email and username
-3. Click "Start Recording" and say your voice phrase (e.g., "My voice is my password")
-4. Click "Stop Recording" when finished
-5. Preview your recording using the audio player
-6. Click "Sign Up" to create your account
-
-### Login Process
-
-1. Navigate to the Login page (or `/login`)
-2. Enter your email or username
-3. Click "Start Recording" and say the **same** voice phrase you used during signup
-4. Click "Stop Recording" when finished
-5. Click "Login" to authenticate
-
-### Dashboard
-
-After successful login, you'll be redirected to the Dashboard showing your account information.
-
-## 🔧 Configuration
-
-### Backend Configuration
-
-The backend can be configured by modifying `backend/app.py`:
-
-- **Database URI**: Change `SQLALCHEMY_DATABASE_URI` to use a different database
-- **Upload Folder**: Modify `UPLOAD_FOLDER` to change where audio files are stored
-- **Max File Size**: Adjust `MAX_CONTENT_LENGTH` for larger audio files
-- **Similarity Threshold**: Modify the `threshold` value in the `login()` function (default: 0.75)
-
-### Whisper Model
-
-You can change the Whisper model size in `backend/whisper_service.py`:
-
-- `tiny`: Fastest, least accurate
-- `base`: Balanced (default)
-- `small`: Better accuracy
-- `medium`: High accuracy
-- `large`: Best accuracy, slowest
-
-```python
-_model = whisper.load_model("base")  # Change "base" to desired model
-```
-
-### Frontend Configuration
-
-The API base URL can be configured in `frontend/src/services/api.js`:
-
-```javascript
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-```
-
-Or set it via environment variable:
 ```bash
-# Create .env file in frontend directory
-REACT_APP_API_URL=http://localhost:5000
+cd backend
 ```
 
-## 🔐 Security Considerations
+Create and activate a virtual environment:
 
-This is a **demo/educational project**. For production use, consider:
+```bash
+# Windows
+python -m venv venv
+venv\Scripts\activate
 
-- **HTTPS**: Use SSL/TLS for secure communication
-- **Token-based Auth**: Implement JWT tokens for session management
-- **Audio Encryption**: Encrypt stored audio files
-- **Rate Limiting**: Prevent brute force attacks
-- **Better Similarity**: Use advanced voice recognition algorithms (e.g., speaker verification)
-- **Environment Variables**: Store sensitive data in `.env` files
-- **Input Validation**: Add more robust input validation
-- **Error Handling**: Improve error messages to avoid information leakage
+# macOS / Linux
+python3 -m venv venv
+source venv/bin/activate
+```
 
-## 🐛 Troubleshooting
+Install dependencies and run the server:
 
-### Backend Issues
+```bash
+pip install -r requirements.txt
+python app.py
+```
 
-**Issue: Whisper model download fails**
-- Solution: Ensure you have a stable internet connection. The first run downloads the model (~150MB for base model).
+Backend runs at **http://localhost:5000**.  
+First run may download the Whisper model (e.g. `tiny`); this can take a few minutes.
 
-**Issue: Port 5000 already in use**
-- Solution: Change the port in `app.py`: `app.run(debug=True, port=5001)`
+### 2. Frontend
 
-**Issue: Database errors**
-- Solution: Delete `voice_auth.db` and restart the server to recreate the database.
+In a new terminal:
 
-### Frontend Issues
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-**Issue: Microphone access denied**
-- Solution: Grant microphone permissions in your browser settings.
+Frontend runs at **http://localhost:5173** (or the port Vite prints).
 
-**Issue: CORS errors**
-- Solution: Ensure Flask-CORS is installed and the backend is running on the correct port.
+### 3. Optional: API URL
 
-**Issue: Audio recording not working**
-- Solution: Use a modern browser (Chrome, Firefox, Edge). Ensure HTTPS or localhost (MediaRecorder requires secure context).
+If the backend is not on `http://localhost:5000`, set in `frontend/.env`:
 
-## 📦 Dependencies
+```env
+VITE_API_URL=http://localhost:5000
+```
 
-### Backend (`requirements.txt`)
-- Flask==3.0.0
-- flask-cors==4.0.0
-- flask-sqlalchemy==3.1.1
-- openai-whisper==20231117
-- torch==2.1.0
-- torchaudio==2.1.0
-- Werkzeug==3.0.1
-
-### Frontend (`package.json`)
-- react==18.2.0
-- react-dom==18.2.0
-- react-router-dom==6.20.0
-- react-scripts==5.0.1
-
-## 🎨 Features Overview
-
-- ✅ User signup with voice phrase
-- ✅ User login with voice authentication
-- ✅ Audio recording with MediaRecorder API
-- ✅ Audio playback preview
-- ✅ Speech-to-text transcription with Whisper
-- ✅ Text similarity matching
-- ✅ Clean, modern UI
-- ✅ Responsive design
-- ✅ Error handling and validation
-
-## 📄 License
-
-This project is open source and available for educational purposes.
-
-## 🤝 Contributing
-
-Feel free to submit issues, fork the repository, and create pull requests for any improvements.
-
-## 📧 Support
-
-For issues or questions, please open an issue on the repository.
+Restart the Vite dev server after changing `.env`.
 
 ---
 
-**Note**: This is a demonstration project. For production applications, implement additional security measures and use professional voice recognition services.
+## Usage
+
+### Sign up
+
+1. Open **http://localhost:5173/signup** (or use “Sign up” from the auth screen).
+2. Enter **name**, **email**, and **password** (and confirm password).
+3. Record a **voice phrase** (e.g. “My voice is my password”) and accept terms.
+4. Submit. You are created in the DB and can go to login.
+
+### Sign in
+
+1. Open **http://localhost:5173/login** (or use “Sign in” from the auth screen).
+2. Enter **email** and **password**.
+3. Record the **same voice phrase** used at signup.
+4. Submit. On success you are redirected to the **Dashboard**.
+
+### Dashboard
+
+After login you see the dashboard; user info is stored in `localStorage` for the session.
+
+---
+
+## Configuration
+
+### Backend (`backend/app.py`)
+
+| Setting | Default | Description |
+| --------| --------| -----------|
+| `SQLALCHEMY_DATABASE_URI` | `sqlite:///voice_auth.db` | SQLite DB path |
+| `UPLOAD_FOLDER` | `uploads` | Directory for saved audio |
+| `MAX_CONTENT_LENGTH` | 16 MB | Max upload size |
+
+Similarity threshold for voice match is in the `login` route (e.g. `threshold = 0.75`). Adjust there if needed.
+
+### Whisper model (`backend/whisper_service.py`)
+
+Model is lazy-loaded on first use. Change the model name in `_get_model()`:
+
+```python
+_model = whisper.load_model("tiny")   # tiny | base | small | medium | large
+```
+
+- **tiny**: Fast, less accurate  
+- **base**: Balanced  
+- **small** / **medium** / **large**: Better accuracy, slower and heavier
+
+### Frontend
+
+- **API base URL**: Set `VITE_API_URL` in `frontend/.env` (see above).  
+  Fallback is defined in `frontend/src/services/api.js`:  
+  `import.meta.env.VITE_API_URL || 'http://localhost:5000'`
+
+---
+
+## Dependencies
+
+### Backend (`backend/requirements.txt`)
+
+| Package | Version | Purpose |
+| --------| --------| --------|
+| Flask | 3.0.0 | Web framework |
+| flask-cors | 4.0.0 | CORS for React |
+| flask-sqlalchemy | 3.1.1 | ORM |
+| openai-whisper | 20231117 | Speech-to-text |
+| torch | 2.1.0 | Whisper backend |
+| torchaudio | 2.1.0 | Audio for Whisper |
+| Werkzeug | 3.0.1 | Hashing, utils |
+
+### Frontend (`frontend/package.json`)
+
+| Package | Purpose |
+| --------| --------|
+| react, react-dom | UI |
+| react-router-dom | Routing |
+| tailwindcss, @tailwindcss/vite | Styling |
+| vite, @vitejs/plugin-react | Build and dev server |
+| lucide-react | Icons (if used) |
+
+---
+
+## Security (for production)
+
+This is a **demo/educational** project. For production you would add:
+
+- HTTPS, secure cookies / JWT
+- Stronger voice verification (e.g. speaker verification)
+- Rate limiting, input validation, secure headers
+- No sensitive data in repo; use env and secrets
+
+---
+
+## Troubleshooting
+
+| Issue | What to do |
+| -----| ----------|
+| Whisper model download fails | Check internet; first run downloads the model. Clear cache (e.g. `~/.cache/whisper`) if corrupted. |
+| Port 5000 in use | Change in `app.py`: `app.run(debug=True, port=5001)` and set `VITE_API_URL` accordingly. |
+| DB / schema errors | Ensure migrations in `app.py` have run. For a clean start, remove `voice_auth.db` and restart backend. |
+| CORS errors | Ensure backend is running and `VITE_API_URL` (or default) matches the Flask URL. |
+| Microphone not working | Use HTTPS or localhost; grant mic permission in the browser. |
+
+---
+
+## License
+
+This project is for educational use. Use and adapt as needed, and add proper security for any production deployment.
