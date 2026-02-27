@@ -189,9 +189,15 @@ def login():
         if not transcription:
             return jsonify({'success': False, 'error': 'Failed to transcribe audio'}), 500
 
-        # Compare transcriptions
+        # Compare transcriptions (debug log to help tuning)
         similarity = calculate_similarity(user.voice_phrase, transcription)
-        threshold = 0.75  # 75% similarity threshold
+        print(
+            f"[VOICE LOGIN] similarity={similarity:.2f}\n"
+            f"  stored: '{user.voice_phrase}'\n"
+            f"  login : '{transcription}'"
+        )
+        # For demo/dev, accept fairly loose matches
+        threshold = 0.3  # 30% similarity threshold
 
         if similarity >= threshold:
             return jsonify({

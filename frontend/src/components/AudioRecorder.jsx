@@ -71,6 +71,7 @@ function AudioRecorder({ onRecordingComplete, disabled = false }) {
       <div className="flex gap-2">
         {!isRecording && !audioBlob && (
           <button
+            type="button"
             className="flex items-center gap-2 bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={startRecording}
             disabled={disabled}
@@ -85,6 +86,7 @@ function AudioRecorder({ onRecordingComplete, disabled = false }) {
         
         {isRecording && (
           <button
+            type="button"
             className="flex items-center gap-2 bg-pink-500 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-pink-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={stopRecording}
             disabled={disabled}
@@ -98,6 +100,7 @@ function AudioRecorder({ onRecordingComplete, disabled = false }) {
 
         {audioBlob && !isRecording && (
           <button
+            type="button"
             className="flex items-center gap-2 bg-cyan-500 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-cyan-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={resetRecording}
             disabled={disabled}
